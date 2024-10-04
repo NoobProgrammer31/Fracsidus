@@ -20,7 +20,7 @@ pub fn menu(remaining: &mut u32, final_choice: &mut u32) {
 
     loop {
         let mut choice = String::new();
-        println!("\n--FRACSIDUS will exit after {remaining} wrong attempts --\n");
+        println!("\n-- FRACSIDUS will exit after {remaining} wrong attempts --\n");
         println!("\n Please Input Your Choice \n");
 
         // taking input for the variable choice
@@ -30,7 +30,7 @@ pub fn menu(remaining: &mut u32, final_choice: &mut u32) {
             Ok(choice) => choice,
             // if input number is not a u32 type then we decrease the count of remaining attempts
             Err(_) => {
-                println!("Invalid Input! Only 1 or 2 are valid inputs as of now!");
+                println!("Invalid Input! Only 1, 2, 3 are valid inputs as of now!");
                 // clearing the input buffer for choice
                 choice.clear();
                 *remaining -= 1;
@@ -52,7 +52,7 @@ pub fn menu(remaining: &mut u32, final_choice: &mut u32) {
         // if input is not a possible choice , following lines print an error message
         // and also decrement the remaining count by 1
         else {
-            println!("Invalid Choice! Please select either 1 or 2.");
+            println!("Invalid Choice! Please select either 1, 2, or 3");
             *remaining -= 1;
             // if attempts are exhausted program exits
             if *remaining == 0 {
@@ -72,7 +72,7 @@ pub fn pause_and_ask() -> String {
     let mut remaining = 5;
     loop {
         let mut decision = String::new();
-        println!("| Fracsidus will exit after {remaining} wrong attempts |");
+        println!("\n | Fracsidus will exit after {remaining} wrong attempts |");
         println!("\n Please Input Your Choice \n");
 
         println!("\n Continue -> 1 \n Return To Main Menu -> 2 \n Exit -> 3 ");
