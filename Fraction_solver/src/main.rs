@@ -4,8 +4,9 @@ mod error_handling;
 mod utils;
 // importing that custom library, and the struct defined in it that is INPUT
 // use crate::basic_functions::basic_maths;
-use crate::error_handling::errortype::{CustomFormatter, Errortype};
-use crate::utils::aggregator::{general_input, menu, pause_and_ask, Inputs};
+use crate::basic_functions::basic_maths::Inputs;
+use crate::error_handling::errortype::{handle_error, Errortype};
+use crate::utils::aggregator::{general_input, menu, pause_and_ask};
 fn main() {
     let mut remaining = 5;
     let mut final_choice = 0;
@@ -27,16 +28,19 @@ fn main() {
                 general_input(&mut numerator);
                 // converting the input in an integer
                 if numerator.trim().is_empty() {
-                    println!("Empty Input Detected ! Redirecting.....");
+                    handle_error(Errortype::EmptyInput);
                     continue;
                 }
                 let num: u32 = match numerator.trim().parse() {
-                    Ok(num) => num,
+                    Ok(num) => {
+                        if num == 0 {
+                            handle_error(Errortype::ZeroInput);
+                        }
+                        num
+                    }
                     Err(_) => {
                         numerator.clear();
-                        let mut formatter = CustomFormatter::new();
-                        Errortype::InvalidInput.frmt(&mut formatter);
-                        println!("{}", formatter.to_string());
+                        handle_error(Errortype::InvalidInput);
                         remaining -= 1;
                         // when attempts are exhausted , program quits
                         if remaining == 0 {
@@ -54,12 +58,17 @@ fn main() {
                 println!("Enter The Factor To Check : ");
                 general_input(&mut factor_to_check);
                 if factor_to_check.trim().is_empty() {
-                    println!("Empty Input Detected ! Redirecting.....");
+                    handle_error(Errortype::EmptyInput);
                     continue;
                 }
                 // handling error prone scenarios and converting it into integer
                 let fac: u32 = match factor_to_check.trim().parse() {
-                    Ok(num) => num,
+                    Ok(num) => {
+                        if num == 0 {
+                            handle_error(Errortype::ZeroInput);
+                        }
+                        num
+                    }
                     Err(_) => {
                         factor_to_check.clear();
                         // please read this
@@ -72,7 +81,7 @@ fn main() {
                         // I resolved it by clearing input buffer for numerator here also
                         // IMPORTANT : Please always clear your nput buffers
                         numerator.clear();
-                        println!(" \n---Invalid Input--- \n");
+                        handle_error(Errortype::InvalidInput);
                         remaining -= 1;
                         // when attempts are exhausted , program quits
                         if remaining == 0 {
@@ -90,10 +99,6 @@ fn main() {
                 // checks to ensure that factor isn't greater than the numerator in the input
                 if inputs.num < inputs.fac {
                     println!("__ Factor input is larger than numerator input ! Error ! ___")
-                }
-                // handling zero as a factor
-                else if inputs.fac == 0 {
-                    println!("\n -- Any number divided by ZERO is UNDEFINED \n")
                 } else {
                     inputs.check_fac();
                     let action = pause_and_ask();
@@ -139,9 +144,18 @@ fn main() {
                 println!("Enter The Number To Check Whether Its Prime or Not :");
                 general_input(&mut num_to_check_for_prime);
 
+                if num_to_check_for_prime.trim().is_empty() {
+                    handle_error(Errortype::EmptyInput);
+                    continue;
+                }
                 // converting the input in an integer
                 let num: u32 = match num_to_check_for_prime.trim().parse() {
-                    Ok(num) => num,
+                    Ok(num) => {
+                        if num == 0 {
+                            handle_error(Errortype::ZeroInput);
+                        }
+                        num
+                    }
                     Err(_) => {
                         println!(" \nInvalid Input \n");
                         num_to_check_for_prime.clear();

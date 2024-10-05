@@ -1,5 +1,5 @@
+use crate::error_handling::errortype::{handle_error, Errortype};
 use std::io;
-
 // Function to take input
 pub fn general_input(input: &mut String) -> String {
     io::stdin().read_line(input).expect("Failed To Read Line");
@@ -25,12 +25,21 @@ pub fn menu(remaining: &mut u32, final_choice: &mut u32) {
 
         // taking input for the variable choice
         general_input(&mut choice);
+        if choice.trim().is_empty() {
+            handle_error(Errortype::EmptyInput);
+            continue;
+        }
         // converting the input into a u32 type
         let choice: u32 = match choice.trim().parse() {
-            Ok(choice) => choice,
+            Ok(choice) => {
+                if choice == 0 {
+                    handle_error(Errortype::ZeroInput);
+                }
+                choice
+            }
             // if input number is not a u32 type then we decrease the count of remaining attempts
             Err(_) => {
-                println!("Invalid Input! Only 1, 2, 3 are valid inputs as of now!");
+                handle_error(Errortype::InvalidInput);
                 // clearing the input buffer for choice
                 choice.clear();
                 *remaining -= 1;
@@ -52,7 +61,7 @@ pub fn menu(remaining: &mut u32, final_choice: &mut u32) {
         // if input is not a possible choice , following lines print an error message
         // and also decrement the remaining count by 1
         else {
-            println!("Invalid Choice! Please select either 1, 2, or 3");
+            handle_error(Errortype::InvalidChoice);
             *remaining -= 1;
             // if attempts are exhausted program exits
             if *remaining == 0 {
@@ -79,12 +88,21 @@ pub fn pause_and_ask() -> String {
         // taking input for the variable decision
         println!("\n--Take a Decision--\n");
         general_input(&mut decision);
+        if decision.trim().is_empty() {
+            handle_error(Errortype::EmptyInput);
+            continue;
+        }
         // converting the input into a u32 type
         let decision: u32 = match decision.trim().parse() {
-            Ok(decision) => decision,
+            Ok(decision) => {
+                if decision == 0 {
+                    handle_error(Errortype::ZeroInput);
+                }
+                decision
+            }
             // if input number is not a u32 type then we decrease the count of remaining attempts
             Err(_) => {
-                println!("\n\nInvalid Input! Only 1, 2, 3 are valid inputs as of now!\n\n");
+                handle_error(Errortype::InvalidInput);
                 // clearing the input buffer for decision
                 remaining -= 1;
                 // when attempts are exhausted , program quits
@@ -108,7 +126,7 @@ pub fn pause_and_ask() -> String {
         // if input is not a possible decision , following lines print an error message
         // and also decrement the remaining count by 1
         else {
-            println!("\n :( Invalid Choice! Please select either 1, 2, 3 \n");
+            handle_error(Errortype::InvalidChoice);
             remaining -= 1;
             // if attempts are exhausted program exits
             if remaining == 0 {
@@ -125,41 +143,5 @@ pub fn pause_and_ask() -> String {
         2 => "main_menu".to_string(),
         3 => "exit".to_string(),
         _ => "exit".to_string(),
-    }
-}
-
-// struct to modify later
-pub struct Inputs {
-    pub num: u32,
-    pub fac: u32,
-}
-
-// implementing method on struct Input
-impl Inputs {
-    // Feature 1 : Checks whether a number is a factor of another number or not
-    pub fn check_fac(&self) {
-        if self.num % self.fac == 0 {
-            println!("\n {} is definitely a factor of {} ", self.fac, self.num);
-        } else {
-            println!("\n {} is not a factor of {}", self.fac, self.num);
-        }
-    }
-
-    // Feature 2 : Checks whether a number is prime or not
-    pub fn check_prime(&self) {
-        if self.num < 2 {
-            println!("Not a Prime !");
-            return;
-        }
-
-        let limit = (self.num as f64).sqrt() as u32;
-
-        for i in 2..=limit {
-            if self.num % i == 0 {
-                println!("\n {} is NOT a PRIME Number ! \n", self.num);
-                return;
-            }
-        }
-        println!("\n {} is a PRIME NUMBER! \n", self.num);
     }
 }
