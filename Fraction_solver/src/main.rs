@@ -1,22 +1,41 @@
-// Connecting this main file to the custom library that handles logical stuff
+// Comment update Date : 5 Oct 2024 : 10:40
+// I am feeling too lazy to provide comments for other files and code as of now
+// Connecting src/main.rs to other modules defined in src
+// src/basic_functions , src/error_handling , src/utils
+// bringing these modules into scope
 mod basic_functions;
 mod error_handling;
 mod utils;
-// importing that custom library, and the struct defined in it that is INPUT
-// use crate::basic_functions::basic_maths;
+
+// Bringing their functionalities into scope
 use crate::basic_functions::basic_maths::Inputs;
 use crate::error_handling::errortype::{handle_error, Errortype};
 use crate::utils::aggregator::{general_input, menu, pause_and_ask};
-fn main() {
-    let mut remaining = 5;
-    let mut activate_menu = true;
-    // when input is valid and is a possible choice then following lines are executed
 
+// main function
+fn main() {
+    // Defining a variable *remaining*
+    // holds the num,ber of attempts user can input inavlid inputs
+    let mut remaining = 5;
+
+    // This variable will control the execution of main menu
+    let mut activate_menu = true;
+
+    // loops the main menu
     loop {
+        // used to handle the re execution of menu function
         if activate_menu {
+            // to hold the choice of the user entered after menu display
             let mut final_choice = 0;
+
+            // calling the menu function
+            // it is defined in src/utils/aggregator.rs
             menu(&mut remaining, &mut final_choice);
+
+            // we get the choice entered by the user through the menu function
+            // and then we use that value with match to execute different features
             match final_choice {
+                // if final choice was 1
                 1 => {
                     let mut numerator = String::new();
                     let mut factor_to_check = String::new();
@@ -183,7 +202,6 @@ fn main() {
                                     continue;
                                 }
                                 "main_menu" => {
-                                    // MENU RECALLING WILL BE ADDED LAtER
                                     activate_menu = true;
                                     break;
                                 }
