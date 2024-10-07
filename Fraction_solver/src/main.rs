@@ -4,14 +4,15 @@
 // src/basic_functions , src/error_handling , src/utils
 // bringing these modules into scope
 mod basic_functions;
+mod design;
 mod error_handling;
 mod utils;
 
 // Bringing their functionalities into scope
 use crate::basic_functions::basic_maths::Inputs;
+use crate::design::design_patterns::print_line;
 use crate::error_handling::errortype::{handle_error, Errortype};
 use crate::utils::aggregator::{general_input, menu, pause_and_ask};
-
 // main function
 fn main() {
     // Defining a variable *remaining*
@@ -23,6 +24,7 @@ fn main() {
 
     // loops the main menu
     loop {
+        println!("hello....");
         // used to handle the re execution of menu function
         if activate_menu {
             // to hold the choice of the user entered after menu display
@@ -30,7 +32,7 @@ fn main() {
 
             // calling the menu function
             // it is defined in src/utils/aggregator.rs
-            menu(&mut remaining, &mut final_choice);
+            menu(&mut remaining, &mut final_choice, &mut activate_menu);
 
             // we get the choice entered by the user through the menu function
             // and then we use that value with match to execute different features
@@ -39,19 +41,35 @@ fn main() {
                 1 => {
                     let mut numerator = String::new();
                     let mut factor_to_check = String::new();
-
+                    print_line();
                     // looping to handle errors and take the right input
                     loop {
-                        println!("\n -- Program will Quit after {remaining} wrong inputs -- \n");
-                        println!(" \n Press ctrl+z to force quit !\n ");
+                        println!(" -> Exiting After {remaining} wrong inputs ");
 
                         // taking input for numerator
-                        println!("Enter The Numerator :");
+                        println!("\nEnter The Numerator :");
                         general_input(&mut numerator);
                         // converting the input in an integer
                         if numerator.trim().is_empty() {
-                            handle_error(Errortype::EmptyInput);
-                            continue;
+                            println!("\n### You Sure You Wanna Return To Main Menu ? ###\n");
+                            let action = pause_and_ask();
+                            match action.as_str() {
+                                "exit" => {
+                                    numerator.clear();
+                                    return;
+                                }
+                                "continue" => {
+                                    numerator.clear();
+                                    continue;
+                                }
+                                "main_menu" => {
+                                    activate_menu = true;
+                                    break;
+                                }
+                                _ => {
+                                    println!("Invalid action: {}", action)
+                                }
+                            }
                         }
                         let num: u32 = match numerator.trim().parse() {
                             Ok(num) => {
@@ -66,12 +84,15 @@ fn main() {
                                 remaining -= 1;
                                 // when attempts are exhausted , program quits
                                 if remaining == 0 {
+                                    activate_menu = false;
+                                    numerator.clear();
+                                    factor_to_check.clear();
                                     println!(
-                            "\n\n| You have exceeded the maximum attempts. Exiting FRACSIDUS |\n\n"
-                        );
+                            "\n\n| You have exceeded the maximum attempts. Exiting FRACSIDUS |\n\n");
                                     break;
                                 }
                                 // if the input is valid then the program continues
+                                numerator.clear();
                                 continue;
                             }
                         };
@@ -80,14 +101,36 @@ fn main() {
                         println!("Enter The Factor To Check : ");
                         general_input(&mut factor_to_check);
                         if factor_to_check.trim().is_empty() {
-                            handle_error(Errortype::EmptyInput);
-                            continue;
+                            println!("\n### You Sure You Wanna Return To Main Menu ? ###\n");
+                            let action = pause_and_ask();
+                            match action.as_str() {
+                                "exit" => {
+                                    factor_to_check.clear();
+                                    numerator.clear();
+                                    return;
+                                }
+                                "continue" => {
+                                    factor_to_check.clear();
+                                    numerator.clear();
+                                    continue;
+                                }
+                                "main_menu" => {
+                                    factor_to_check.clear();
+                                    numerator.clear();
+                                    activate_menu = true;
+                                    break;
+                                }
+                                _ => {
+                                    println!("Invalid action: {}", action)
+                                }
+                            }
                         }
                         // handling error prone scenarios and converting it into integer
                         let fac: u32 = match factor_to_check.trim().parse() {
                             Ok(num) => {
                                 if num == 0 {
                                     handle_error(Errortype::ZeroInput);
+                                    continue;
                                 }
                                 num
                             }
@@ -107,12 +150,14 @@ fn main() {
                                 remaining -= 1;
                                 // when attempts are exhausted , program quits
                                 if remaining == 0 {
+                                    activate_menu = false;
                                     println!(
                                 " \n\n | You have exceeded the maximum attempts. Exiting | \n\n"
                             );
                                     break;
                                 }
                                 // if the input is valid then the program continues
+                                numerator.clear();
                                 continue;
                             }
                         };
@@ -152,18 +197,35 @@ fn main() {
                 }
                 2 => {
                     let mut num_to_check_for_prime = String::new();
+                    println!(" \n -- (Press Enter) To Interrupt --\n ");
                     // looping to handle errors and take the right input
                     loop {
                         println!("\nProgram will quit after {remaining} wrong inputs\n");
-                        println!(" \n Press ctrl+z to quit !\n ");
 
                         // taking input for numerator
                         println!("Enter The Number To Check Whether Its Prime or Not :");
                         general_input(&mut num_to_check_for_prime);
 
                         if num_to_check_for_prime.trim().is_empty() {
-                            handle_error(Errortype::EmptyInput);
-                            continue;
+                            println!("\n### You Sure You Wanna Return To Main Menu ? ###\n");
+                            let action = pause_and_ask();
+                            match action.as_str() {
+                                "exit" => {
+                                    num_to_check_for_prime.clear();
+                                    return;
+                                }
+                                "continue" => {
+                                    num_to_check_for_prime.clear();
+                                    continue;
+                                }
+                                "main_menu" => {
+                                    activate_menu = true;
+                                    break;
+                                }
+                                _ => {
+                                    println!("Invalid action: {}", action)
+                                }
+                            }
                         }
                         // converting the input in an integer
                         let num: u32 = match num_to_check_for_prime.trim().parse() {
@@ -179,6 +241,7 @@ fn main() {
                                 remaining -= 1;
                                 // when attempts are exhausted , program quits
                                 if remaining == 0 {
+                                    activate_menu = false;
                                     println!("You have exceeded the maximum attempts. Exiting.");
                                     break;
                                 }
@@ -216,12 +279,16 @@ fn main() {
                     }
                 }
                 3 => {
-                    println!("Exiting Program.......")
+                    println!("Exiting Program.......");
+                    break;
                 }
                 _ => {
-                    println!("Invalid Choice ! ")
+                    println!("Invalid Choice ! ");
+                    continue;
                 }
             };
+        } else {
+            break;
         }
     }
 }

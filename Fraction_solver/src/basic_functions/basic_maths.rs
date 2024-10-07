@@ -9,16 +9,30 @@ impl Inputs {
     // Feature 1 : Checks whether a number is a factor of another number or not
     pub fn check_fac(&self) {
         if self.num % self.fac == 0 {
-            println!("\n {} is definitely a factor of {} ", self.fac, self.num);
+            println!(
+                "
+                _______________________________
+                {} is definitely a factor of {} ",
+                self.fac, self.num
+            );
         } else {
-            println!("\n {} is not a factor of {}", self.fac, self.num);
+            println!(
+                "
+                _________________________
+                {} is not a factor of {}",
+                self.fac, self.num
+            );
         }
     }
 
     // Feature 2 : Checks whether a number is prime or not
     pub fn check_prime(&self) {
         if self.num < 2 {
-            println!("Not a Prime !");
+            println!(
+                "
+                _____________
+                 Not a Prime !"
+            );
             return;
         }
 
@@ -26,10 +40,20 @@ impl Inputs {
 
         for i in 2..=limit {
             if self.num % i == 0 {
-                println!("\n {} is NOT a PRIME Number ! \n", self.num);
+                println!(
+                    "
+                ___________________________
+                {} is NOT a PRIME Number ! \n",
+                    self.num
+                );
                 return;
             }
         }
-        println!("\n {} is a PRIME NUMBER! \n", self.num);
+        println!(
+            "
+            _________________________
+            {} is a PRIME NUMBER! \n",
+            self.num
+        );
     }
 }
