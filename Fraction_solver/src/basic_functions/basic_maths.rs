@@ -1,50 +1,60 @@
-// struct to modify later
-pub struct Inputs {
-    pub num: u32,
-    pub fac: u32,
+// struct to store the results of all checks
+pub struct Results {
+    pub prime_check: bool,
+    pub co_prime_check: bool,
+    pub factor_check: bool,
 }
 
-// implementing method on struct Input
-impl Inputs {
-    // Feature 1 : Checks whether a number is a factor of another number or not
+// Creating a fraction Simplifier
+pub struct DualInputs {
+    pub first_num: i32,
+    pub second_num: i32,
+}
+
+impl DualInputs {
+    // Factor Check
     pub fn check_fac(&self) {
-        if self.num % self.fac == 0 {
+        if self.first_num % self.second_num == 0 {
             println!(
                 "
                 _______________________________
                 {} is definitely a factor of {} ",
-                self.fac, self.num
+                self.second_num, self.first_num
             );
         } else {
             println!(
                 "
                 _________________________
                 {} is not a factor of {}",
-                self.fac, self.num
+                self.second_num, self.first_num
             );
         }
     }
 
-    // Feature 2 : Checks whether a number is prime or not
+    // Find Prime Factors
+    pub fn find_factors(&self) {}
+
+    // Prime Check
     pub fn check_prime(&self) {
-        if self.num < 2 {
+        if self.first_num < 2 {
             println!(
                 "
                 _____________
-                 Not a Prime !"
+{} is Not a PRIME !",
+                self.first_num,
             );
             return;
         }
 
-        let limit = (self.num as f64).sqrt() as u32;
+        let limit = (self.first_num as f64).sqrt() as i32;
 
         for i in 2..=limit {
-            if self.num % i == 0 {
+            if self.first_num % i == 0 {
                 println!(
                     "
                 ___________________________
-                {} is NOT a PRIME Number ! \n",
-                    self.num
+                {} is a COMPOSITE Number ! \n",
+                    self.first_num
                 );
                 return;
             }
@@ -53,7 +63,19 @@ impl Inputs {
             "
             _________________________
             {} is a PRIME NUMBER! \n",
-            self.num
+            self.first_num
         );
     }
+
+    // Twin Prime Check
+    // need to run prime_check() function before calling this program
+    fn check_twin_prime(&self) -> bool {
+        let difference = self.first_num - self.second_num;
+        if difference == 2 {
+            return true;
+        }
+        false
+    }
+
+    fn check_co_prime(&self) {}
 }

@@ -8,11 +8,17 @@ mod design;
 mod error_handling;
 mod utils;
 
+use basic_functions::basic_maths::DualInputs;
+
 // Bringing their functionalities into scope
-use crate::basic_functions::basic_maths::Inputs;
-use crate::design::design_patterns::print_line;
-use crate::error_handling::errortype::{handle_error, Errortype};
-use crate::utils::aggregator::{general_input, menu, pause_and_ask};
+use design::design_patterns::print_line;
+use error_handling::errortype::{handle_error, Errortype};
+use utils::aggregator::{general_input, menu, pause_and_ask};
+
+// Function to call actions
+// will add it in future
+// fn call_action() {}
+
 // main function
 fn main() {
     // Defining a variable *remaining*
@@ -71,7 +77,7 @@ fn main() {
                                 }
                             }
                         }
-                        let num: u32 = match numerator.trim().parse() {
+                        let num: i32 = match numerator.trim().parse() {
                             Ok(num) => {
                                 if num == 0 {
                                     handle_error(Errortype::ZeroInput);
@@ -126,7 +132,7 @@ fn main() {
                             }
                         }
                         // handling error prone scenarios and converting it into integer
-                        let fac: u32 = match factor_to_check.trim().parse() {
+                        let fac: i32 = match factor_to_check.trim().parse() {
                             Ok(num) => {
                                 if num == 0 {
                                     handle_error(Errortype::ZeroInput);
@@ -162,9 +168,12 @@ fn main() {
                             }
                         };
 
-                        let inputs = Inputs { num, fac };
+                        let inputs = DualInputs {
+                            first_num: num,
+                            second_num: fac,
+                        };
                         // checks to ensure that factor isn't greater than the numerator in the input
-                        if inputs.num < inputs.fac {
+                        if inputs.first_num < inputs.second_num {
                             println!("__ Factor input is larger than numerator input ! Error ! ___")
                         } else {
                             inputs.check_fac();
@@ -228,7 +237,7 @@ fn main() {
                             }
                         }
                         // converting the input in an integer
-                        let num: u32 = match num_to_check_for_prime.trim().parse() {
+                        let num: i32 = match num_to_check_for_prime.trim().parse() {
                             Ok(num) => {
                                 if num == 0 {
                                     handle_error(Errortype::ZeroInput);
@@ -249,8 +258,11 @@ fn main() {
                                 continue;
                             }
                         };
-                        let inputs = Inputs { num, fac: 0 };
-                        if inputs.num == inputs.fac {
+                        let inputs = DualInputs {
+                            first_num: num,
+                            second_num: 0,
+                        };
+                        if inputs.first_num == inputs.second_num {
                             println!("\nYou are too dumb to Enter ZERO !!!\n");
                         } else {
                             inputs.check_prime();

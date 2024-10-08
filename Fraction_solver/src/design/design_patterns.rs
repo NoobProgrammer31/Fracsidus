@@ -1,3 +1,7 @@
+pub fn print_mode_message() {
+    println!("Chose The Mode\n1 -> Basic Mode\n 2 -> Advance Mode\n ")
+}
+
 pub fn print_welcome_message() {
     println!(
         "\n
@@ -16,9 +20,9 @@ ____________________________________________________________________
 ║                Enter Your Choice              ║
 ║_______________________________________________║
 ║                                               ║
-║   1 ➤  Check Whether a Number is a Factor     ║
+║   1 ➤  Check Factor                           ║
 ║                                               ║
-║   2 ➤  Check Whether a Number is Prime        ║
+║   2 ➤  Check Prime | Composite                ║
 ║                                               ║
 ║   3 ➤  EXIT                                   ║
 ║                                               ║
