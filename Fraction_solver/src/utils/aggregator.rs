@@ -69,7 +69,6 @@ pub fn mode_menu(remaining: &mut u32, final_choice: &mut u32, activate_menu: &mu
                 return;
             }
             // if there are attempts left loop continues
-
             continue;
         }
     }
@@ -142,7 +141,7 @@ pub fn menu(remaining: &mut u32, final_choice: &mut u32, activate_menu: &mut boo
 
 // Function to return to Main Menu Or Exit the program or continue
 pub fn pause_and_ask() -> String {
-    let possible_decision = [1, 2, 3];
+    let possible_decision = [1, 2, 3, 4];
     let final_decision: u32;
     let mut remaining = 5;
     let mut decision = String::new();
@@ -206,6 +205,7 @@ pub fn pause_and_ask() -> String {
         1 => "continue".to_string(),
         2 => "main_menu".to_string(),
         3 => "exit".to_string(),
+        4 => "mode_menu".to_string(),
         _ => "exit".to_string(),
     }
 }

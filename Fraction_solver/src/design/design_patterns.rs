@@ -1,5 +1,34 @@
+// IMPORTANT
+// Note to myself : Make sure to add Help features to guide user in FRACSIDUS
+
 pub fn print_mode_message() {
-    println!("Chose The Mode\n1 -> Basic Mode\n 2 -> Advance Mode\n ")
+    println!(
+        "\n
+███████╗██████╗  █████╗  ██████╗███████╗██╗██████╗ ██╗   ██╗███████╗
+██╔════╝██╔══██╗██╔══██╗██╔════╝██╔════╝██║██╔══██╗██║   ██║██╔════╝
+█████╗  ██████╔╝███████║██║     ███████╗██║██║  ██║██║   ██║███████╗
+██╔══╝  ██╔══██╗██╔══██║██║     ╚════██║██║██║  ██║██║   ██║╚════██║
+██║     ██║  ██║██║  ██║╚██████╗███████║██║██████╔╝╚██████╔╝███████║
+╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚═╝╚═════╝  ╚═════╝ ╚══════╝
+Basic Mode for Basic Needs | Advanced Mode For Every Need
+____________________________________________________________________
+
+          Owned & Developed By - @ NoobProgrammer31
+____________________________________________________________________
+╔═══════════════════════════════════════════════╗
+║             : Chose The Mode :                ║
+║_______________________________________________║
+║                                               ║
+║   1 ➤  Basic Mode                             ║
+║                                               ║
+║   2 ➤  Advanced Mode                          ║
+║                                               ║
+║   3 ➤  EXIT                                   ║
+║                                               ║
+╚═══════════════════════════════════════════════╝
+FRACSIDUS Exits After 3 Wrong Attempts
+---- Please Input Your Choice Below ----"
+    )
 }
 
 pub fn print_welcome_message() {

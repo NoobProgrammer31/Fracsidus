@@ -1,9 +1,9 @@
 // struct to store the results of all checks
-pub struct Results {
-    pub prime_check: bool,
-    pub co_prime_check: bool,
-    pub factor_check: bool,
-}
+// pub struct Results {
+//     pub prime_check: bool,
+//     pub co_prime_check: bool,
+//     pub factor_check: bool,
+// }
 
 // Creating a fraction Simplifier
 pub struct DualInputs {
@@ -32,7 +32,7 @@ impl DualInputs {
     }
 
     // Find Prime Factors
-    pub fn find_factors(&self) {}
+    // pub fn find_factors(&self) {}
 
     // Prime Check
     pub fn check_prime(&self) {
@@ -69,13 +69,13 @@ impl DualInputs {
 
     // Twin Prime Check
     // need to run prime_check() function before calling this program
-    fn check_twin_prime(&self) -> bool {
-        let difference = self.first_num - self.second_num;
-        if difference == 2 {
-            return true;
-        }
-        false
-    }
-
-    fn check_co_prime(&self) {}
+    // fn check_twin_prime(&self) -> bool {
+    //     let difference = self.first_num - self.second_num;
+    //     if difference == 2 {
+    //         return true;
+    //     }
+    //     false
+    // }
+    //
+    // fn check_co_prime(&self) {}
 }
