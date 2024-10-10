@@ -1,6 +1,3 @@
-use crate::design::design_patterns::{
-    print_confirm_menu, print_mode_message, print_welcome_message,
-};
 use crate::error_handling::errortype::{handle_error, Errortype};
 use std::io;
 // Function to take input
@@ -9,73 +6,7 @@ pub fn general_input(input: &mut String) -> String {
     input.to_string()
 }
 
-// Mode Menu
-pub fn mode_menu(remaining: &mut u32, final_choice: &mut u32, activate_menu: &mut bool) {
-    print_mode_message();
-    println!(" \n-> Exiting After {remaining} wrong inputs ");
-    // Defiining neccessary variables
-    let possible_mode_choices = [1, 2, 3];
-
-    // Taking input in the variable choice through this loop
-    // to handle invalid inputs explicitly
-    // doesn't let the program crash
-    // if valid input is found then it exits the loop
-    // and then final_choice variable take that valid input
-
-    let mut mode_choice = String::new();
-    loop {
-        mode_choice.clear();
-        // taking input for the variable choice
-        general_input(&mut mode_choice);
-        if mode_choice.trim().is_empty() {
-            handle_error(Errortype::EmptyInput);
-            continue;
-        }
-        // converting the input into a u32 type
-        let mode_choice: u32 = match mode_choice.trim().parse() {
-            Ok(choice) => choice,
-            // if input number is not a u32 type then we decrease the count of remaining attempts
-            Err(_) => {
-                handle_error(Errortype::InvalidInput);
-                // clearing the input buffer for choice
-                *remaining -= 1;
-                println!(" \n-> Exiting After {remaining} wrong inputs ");
-                // when attempts are exhausted , program quits
-                if *remaining == 0 {
-                    println!("You have exceeded the maximum attempts. Exiting.");
-                    *activate_menu = false;
-                    return;
-                }
-                // if the input is valid then the program continues
-                continue;
-            }
-        };
-        // checking whether the valid input is a possible choice or not
-        if possible_mode_choices.contains(&mode_choice) {
-            // if it is a possible choice then the loop breaks and goes out to next if statements
-            *final_choice = mode_choice;
-            break;
-        }
-        // if input is not a possible choice , following lines print an error message
-        // and also decrement the remaining count by 1
-        else {
-            println!("choice is {mode_choice}");
-            handle_error(Errortype::InvalidChoice);
-            *remaining -= 1;
-            // if attempts are exhausted program exits
-            if *remaining == 0 {
-                *activate_menu = false;
-                println!("You have exceeded the maximum attempts. Exiting.");
-                return;
-            }
-            // if there are attempts left loop continues
-            continue;
-        }
-    }
-}
-
 pub fn menu(remaining: &mut u32, final_choice: &mut u32, activate_menu: &mut bool) {
-    print_welcome_message();
     println!(" \n-> Exiting After {remaining} wrong inputs ");
     // Defiining neccessary variables
     let possible_choices = [1, 2, 3];
@@ -148,7 +79,6 @@ pub fn pause_and_ask() -> String {
     loop {
         decision.clear();
         println!("\n -> Exiting After {remaining} Wrong Inputs");
-        print_confirm_menu();
         general_input(&mut decision);
         if decision.trim().is_empty() {
             handle_error(Errortype::EmptyInput);

@@ -11,9 +11,11 @@ mod utils;
 use basic_functions::basic_maths::DualInputs;
 
 // Bringing their functionalities into scope
-use design::design_patterns::print_line;
+use design::design_patterns::{
+    print_confirm_menu, print_line, print_mode_message, print_welcome_message,
+};
 use error_handling::errortype::{handle_error, Errortype};
-use utils::aggregator::{general_input, menu, mode_menu, pause_and_ask};
+use utils::aggregator::{general_input, menu, pause_and_ask};
 
 // Function to call actions
 // will add it in future
@@ -27,7 +29,8 @@ fn main() {
     'mode_loop: loop {
         if activate_mode_menu {
             let mut final_mode_choice = 0;
-            mode_menu(
+            print_mode_message();
+            menu(
                 &mut attempts_for_mode,
                 &mut final_mode_choice,
                 &mut activate_mode_menu,
@@ -50,6 +53,7 @@ fn main() {
 
                             // calling the menu function
                             // it is defined in src/utils/aggregator.rs
+                            print_welcome_message();
                             menu(&mut remaining, &mut final_choice, &mut activate_menu);
 
                             // we get the choice entered by the user through the menu function
@@ -57,19 +61,22 @@ fn main() {
                             match final_choice {
                                 // if final choice was 1
                                 1 => {
+                                    // For Addition Of Fractions
                                     let mut numerator = String::new();
-                                    let mut factor_to_check = String::new();
+                                    let mut denominator = String::new();
                                     print_line();
-                                    // looping to handle errors and take the right input
                                     loop {
                                         println!(" -> Exiting After {remaining} wrong inputs ");
 
-                                        // taking input for numerator
-                                        println!("\nEnter The Numerator :");
+                                        // taking input and handling when the input is empty
+                                        // will generalise it later during optimisation process
+                                        // optimise later
+                                        println!("Enter The Numerator");
                                         general_input(&mut numerator);
                                         // converting the input in an integer
                                         if numerator.trim().is_empty() {
                                             println!("\n### You Sure You Wanna Return To Main Menu ? ###\n");
+                                            print_confirm_menu();
                                             let action = pause_and_ask();
                                             match action.as_str() {
                                                 "exit" => {
@@ -109,7 +116,6 @@ fn main() {
                                                     activate_menu = false;
                                                     activate_mode_menu = false;
                                                     numerator.clear();
-                                                    factor_to_check.clear();
                                                     println!(
                             "\n\n| You have exceeded the maximum attempts. Exiting FRACSIDUS |\n\n");
                                                     break;
@@ -120,31 +126,31 @@ fn main() {
                                             }
                                         };
 
-                                        // handling error prone scenarios and converting it into integer
-                                        println!("Enter The Factor To Check : ");
-                                        general_input(&mut factor_to_check);
-                                        if factor_to_check.trim().is_empty() {
+                                        println!("Enter The Denominator : ");
+                                        general_input(&mut denominator);
+                                        if denominator.trim().is_empty() {
                                             println!("\n### You Sure You Wanna Return To Main Menu ? ###\n");
+                                            print_confirm_menu();
                                             let action = pause_and_ask();
                                             match action.as_str() {
                                                 "exit" => {
-                                                    factor_to_check.clear();
+                                                    denominator.clear();
                                                     numerator.clear();
                                                     return;
                                                 }
                                                 "continue" => {
-                                                    factor_to_check.clear();
+                                                    denominator.clear();
                                                     numerator.clear();
                                                     continue;
                                                 }
                                                 "main_menu" => {
-                                                    factor_to_check.clear();
+                                                    denominator.clear();
                                                     numerator.clear();
                                                     activate_menu = true;
                                                     break;
                                                 }
                                                 "mode_menu" => {
-                                                    factor_to_check.clear();
+                                                    denominator.clear();
                                                     numerator.clear();
                                                     activate_mode_menu = true;
                                                     break;
@@ -155,7 +161,7 @@ fn main() {
                                             }
                                         }
                                         // handling error prone scenarios and converting it into integer
-                                        let fac: i32 = match factor_to_check.trim().parse() {
+                                        let deno: i32 = match denominator.trim().parse() {
                                             Ok(num) => {
                                                 if num == 0 {
                                                     handle_error(Errortype::ZeroInput);
@@ -164,7 +170,7 @@ fn main() {
                                                 num
                                             }
                                             Err(_) => {
-                                                factor_to_check.clear();
+                                                denominator.clear();
                                                 // please read this
                                                 // so I encountered a bug in my code which was
                                                 // after you enter the valid input for numerator
@@ -191,26 +197,26 @@ fn main() {
                                                 continue;
                                             }
                                         };
-
                                         let inputs = DualInputs {
                                             first_num: num,
-                                            second_num: fac,
+                                            second_num: deno,
                                         };
                                         // checks to ensure that factor isn't greater than the numerator in the input
                                         if inputs.first_num < inputs.second_num {
                                             println!("__ Factor input is larger than numerator input ! Error ! ___")
                                         } else {
                                             inputs.check_fac();
+                                            print_confirm_menu();
                                             let action = pause_and_ask();
                                             match action.as_str() {
                                                 "exit" => {
                                                     numerator.clear();
-                                                    factor_to_check.clear();
+                                                    denominator.clear();
                                                     return;
                                                 }
                                                 "continue" => {
                                                     numerator.clear();
-                                                    factor_to_check.clear();
+                                                    denominator.clear();
                                                     continue;
                                                 }
                                                 "main_menu" => {
@@ -229,7 +235,7 @@ fn main() {
 
                                         // Clear input buffers for the next iteration
                                         numerator.clear();
-                                        factor_to_check.clear();
+                                        denominator.clear();
                                     }
                                 }
                                 2 => {
@@ -249,6 +255,7 @@ fn main() {
 
                                         if num_to_check_for_prime.trim().is_empty() {
                                             println!("\n### You Sure You Wanna Return To Main Menu ? ###\n");
+                                            print_confirm_menu();
                                             let action = pause_and_ask();
                                             match action.as_str() {
                                                 "exit" => {
@@ -303,6 +310,7 @@ fn main() {
                                             println!("\nYou are too dumb to Enter ZERO !!!\n");
                                         } else {
                                             inputs.check_prime();
+                                            print_confirm_menu();
                                             let action = pause_and_ask();
                                             match action.as_str() {
                                                 "exit" => {
