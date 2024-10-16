@@ -6,9 +6,8 @@ pub fn general_input(input: &mut String) -> String {
     input.to_string()
 }
 
-pub fn menu(remaining: &mut u32, final_choice: &mut u32) {
-    println!("\n--- Fracsidus Welcomes YOU ---\n");
-    println!("\n Enter Your Choice \n 1 -> Check Whether a Number is a factor or not \n 2 -> Check whether a Number is Prime or Not \n 3 -> EXIT ! \n ");
+pub fn menu(remaining: &mut u32, final_choice: &mut u32, activate_menu: &mut bool) {
+    println!(" \n-> Exiting After {remaining} wrong inputs ");
     // Defiining neccessary variables
     let possible_choices = [1, 2, 3];
 
@@ -18,11 +17,9 @@ pub fn menu(remaining: &mut u32, final_choice: &mut u32) {
     // if valid input is found then it exits the loop
     // and then final_choice variable take that valid input
 
+    let mut choice = String::new();
     loop {
-        let mut choice = String::new();
-        println!("\n-- FRACSIDUS will exit after {remaining} wrong attempts --\n");
-        println!("\n Please Input Your Choice \n");
-
+        choice.clear();
         // taking input for the variable choice
         general_input(&mut choice);
         if choice.trim().is_empty() {
@@ -31,22 +28,18 @@ pub fn menu(remaining: &mut u32, final_choice: &mut u32) {
         }
         // converting the input into a u32 type
         let choice: u32 = match choice.trim().parse() {
-            Ok(choice) => {
-                if choice == 0 {
-                    handle_error(Errortype::ZeroInput);
-                }
-                choice
-            }
+            Ok(choice) => choice,
             // if input number is not a u32 type then we decrease the count of remaining attempts
             Err(_) => {
                 handle_error(Errortype::InvalidInput);
                 // clearing the input buffer for choice
-                choice.clear();
                 *remaining -= 1;
+                println!(" \n-> Exiting After {remaining} wrong inputs ");
                 // when attempts are exhausted , program quits
                 if *remaining == 0 {
                     println!("You have exceeded the maximum attempts. Exiting.");
-                    break;
+                    *activate_menu = false;
+                    return;
                 }
                 // if the input is valid then the program continues
                 continue;
@@ -61,14 +54,17 @@ pub fn menu(remaining: &mut u32, final_choice: &mut u32) {
         // if input is not a possible choice , following lines print an error message
         // and also decrement the remaining count by 1
         else {
+            println!("choice is {choice}");
             handle_error(Errortype::InvalidChoice);
             *remaining -= 1;
             // if attempts are exhausted program exits
             if *remaining == 0 {
+                *activate_menu = false;
                 println!("You have exceeded the maximum attempts. Exiting.");
-                break;
+                return;
             }
             // if there are attempts left loop continues
+
             continue;
         }
     }
@@ -76,17 +72,13 @@ pub fn menu(remaining: &mut u32, final_choice: &mut u32) {
 
 // Function to return to Main Menu Or Exit the program or continue
 pub fn pause_and_ask() -> String {
-    let possible_decision = [1, 2, 3];
+    let possible_decision = [1, 2, 3, 4];
     let final_decision: u32;
     let mut remaining = 5;
+    let mut decision = String::new();
     loop {
-        let mut decision = String::new();
-        println!("\n | Fracsidus will exit after {remaining} wrong attempts |");
-        println!("\n Please Input Your Choice \n");
-
-        println!("\n Continue -> 1 \n Return To Main Menu -> 2 \n Exit -> 3 ");
-        // taking input for the variable decision
-        println!("\n--Take a Decision--\n");
+        decision.clear();
+        println!("\n -> Exiting After {remaining} Wrong Inputs");
         general_input(&mut decision);
         if decision.trim().is_empty() {
             handle_error(Errortype::EmptyInput);
@@ -107,6 +99,7 @@ pub fn pause_and_ask() -> String {
                 remaining -= 1;
                 // when attempts are exhausted , program quits
                 if remaining == 0 {
+                    decision.clear();
                     println!(
                         "\n\n| You have exceeded the maximum attempts. Exiting FRACSIDUS | \n\n"
                     );
@@ -142,6 +135,7 @@ pub fn pause_and_ask() -> String {
         1 => "continue".to_string(),
         2 => "main_menu".to_string(),
         3 => "exit".to_string(),
+        4 => "mode_menu".to_string(),
         _ => "exit".to_string(),
     }
 }
